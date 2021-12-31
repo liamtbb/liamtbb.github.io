@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Removing Cluster from Proxmox Device
+title: Removing Cluster Data from Proxmox Device
 ---
 
 

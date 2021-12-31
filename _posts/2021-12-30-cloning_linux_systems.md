@@ -20,7 +20,7 @@ I typically create a directory for mounting the root (/) partition to first, the
 mkdir /mount
 
 #mount destination partitions
-mount /dev/md1 /mount/   ## mount root
+mount /dev/md1 /mount/   ## mount root first
 mount /dev/md0 /mount/boot/   ## mount boot
 mount /dev/md2 /mount/home/   ## mount home
 ```
@@ -33,60 +33,60 @@ The below rsync command will sync everything (a) including hard-links (H), while
 
 ```shell
 # if you're cloning over a totally clean, unbootable system
-$ rsync -aHxv --numeric-ids --progress root@1.2.3.4:/* /mount --exclude=/dev --exclude=/proc --exclude=/sys --exclude=/tmp
+rsync -aHxv --numeric-ids --progress root@1.2.3.4:/* /mount --exclude=/dev --exclude=/proc --exclude=/sys --exclude=/tmp
 
 # if you're cloning over a working, bootable system
-$ rsync -aHxv --numeric-ids --progress root@1.2.3.4:/* /mount --exclude=/dev --exclude=/proc --exclude=/sys --exclude=/tmp --exclude=/etc/default/grub --exclude=/etc/fstab --exclude=/etc/mdadm.conf
+rsync -aHxv --numeric-ids --progress root@1.2.3.4:/* /mount --exclude=/dev --exclude=/proc --exclude=/sys --exclude=/tmp --exclude=/etc/default/grub --exclude=/etc/fstab --exclude=/etc/mdadm.conf
 ```
 ----
 
 ## Update your fstab, default/grub and mdadm.conf files as needed:
 
-```
+```shell
 # ls or blkid to retrieve new uuids
-$ ls -la /dev/disk/by-uuid # to get new UUID's 
-$ blkid
+ls -la /dev/disk/by-uuid # to get new UUID's 
+blkid
 
 # update essential boot files
-$ nano /mount/etc/fstab
-$ nano /mount/etc/default/grub
-$ nano /mount/etc/mdadm.conf
+nano /mount/etc/fstab
+nano /mount/etc/default/grub
+nano /mount/etc/mdadm.conf
 ```
 ----
 
 ## Mount /mount/proc, /mount/sys/, /mount/dev/, chroot to /mount:
 These directories need to be mounted for chroot to work. Chroot simply shifts the functional filesystem root to the chosen directory, in this case our mounted clone server. Chrooting will allow us to rebuild grub so the cloned system will boot on its own.
 
-```
+```shell
 $ cd /mount/ 
-$ mount -t proc proc proc/ 
-$ mount -t sysfs sys sys/ 
-$ mount -o bind /dev dev/ 
-$ chroot .
+mount -t proc proc proc/ 
+mount -t sysfs sys sys/ 
+mount -o bind /dev dev/ 
+chroot .
 ```
 ----
 
 ## If you get errors using commands after chrooting then you might have to export /bin to PATH:
 May or may not be an issue. If it isn't then great, if it is then slap the following commands in and it should be back to great again.
 
-```
-$ export PATH=$PATH:/bin
-$ export PATH=$PATH:/usr/sbin
+```shell
+export PATH=$PATH:/bin
+export PATH=$PATH:/usr/sbin
 ```
 ----
 
 ## Install grub or other bootloader of your choosing
 This is where the updated fstab/grub/mdadm files come into play. Grub will use the new system's UUIDs to organise the partitions on boot, so all UUIDs will need to be updated accordingly for this to work. If you installed over a working, bootable system and preserved the old files then you should be ready to go. The process might be different depending on the distro being cloned, and the grub.cfg file might not be in a slightly different directory in /boot/grub. Here are examples for Centos7 and Ubuntu18:
 
-```
+```shell
 #update grub.cfg file with new UUIDs
-$ grub2-mkconfig -o /boot/grub/grub.cfg   ## Centos7
+grub2-mkconfig -o /boot/grub/grub.cfg   ## Centos7
 OR
-$ update-grub   ## Ubuntu18
+update-grub   ## Ubuntu18
 
 #install grub to bootable drives
-$ grub2-install /dev/sda
-$ grub2-install /dev/sdb   ## install to multiple drives if available
+grub2-install /dev/sda
+grub2-install /dev/sdb   ## install to multiple drives if available
 ```
 ----
 

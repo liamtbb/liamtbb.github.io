@@ -83,4 +83,6 @@ $ grub2-install /dev/sdb   ## install to multiple drives if available
 ## Cross fingers and reboot
 If you didn't get any errors after running the above grub commands then the system is, at least in theory, ready to boot. You can exit out of chroot and reboot the device. On boot, select the appropriate system drive to confirm everything is operational.
 
-If boot fails, mount the system back up for troubleshooting.
+If boot fails, mount the system back up for troubleshooting. Chances are there was an issue with the configured UUIDs in the grub/fstab/mdadm files. Compare them against the source system to help identify problems.
+
+----

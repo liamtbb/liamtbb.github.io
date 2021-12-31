@@ -38,7 +38,7 @@ vgscan
 
 - In this case, 'vgscan' confirms that vggroup 'dv_scll' exists, and that it contains logical volumes LV_ROOT, LV_HOME, LV_USR, LV_TMP, and LV_VAR. Fortunately these LVs are labeled in a logical way the eliminates the guesswork of what they do. If that wasn't the case, you'd have to mount each LV individually and determine what it was based on the files within. Since we already know where they belong, we can mount them accordingly:
 
-!!Note that '/' is mounted to /mnt/sysimage on the recovery system, so all other partitions must be mounted in a cascading fashion using /mnt/sysimage/ as the root for the recovered system. This should make more sense when applied to the example below:!!
+> Note that '/' is mounted to /mnt/sysimage on the recovery system, so all other partitions must be mounted in a cascading fashion using /mnt/sysimage/ as the root for the recovered system. This should make more sense when applied to the example below:
 
 ```shell
 mount /dev/dv_scll/LV_ROOT /mnt/sysimage/

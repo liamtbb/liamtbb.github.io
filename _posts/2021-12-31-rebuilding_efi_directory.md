@@ -16,7 +16,7 @@ If the system isn't online and isn't bootable, you can try [recovering it from a
 
 ### Recreate the EFI partition if you need to, and mount it to /boot/efi
 
-Use fdisk or gdisk or whatever you prefer to make an EFI partition if it doesn't already exist, 256MB is more than enough. Ensure the partition type is set as EFI so the correct flag is set. After the EFI partition is created, make the filesystem type fat32:
+Use fdisk or gdisk or whatever you prefer to make an EFI partition if it doesn't already exist, 512MB is more than enough. Ensure the partition type is set as EFI so the correct flag is set. After the EFI partition is created, make the filesystem type fat32:
 
 ```shell
 # /dev/sda3 is efi for this example

@@ -1,13 +1,15 @@
 ---
 layout: post
-title: Rebuilding the EFI Directory in Centos7
+title: Rebuilding the EFI Directory in Linux
 ---
 
 ----
 
 ### /boot exists but /boot/efi is lost or otherwise not functional
 
-Due to data location conflicts, EFI partitions are often not set in an array on systems using software raid. However, the /boot partition has no such conflict, so it will more than likely have some sort of redundancy. Because of this, losing EFI while maintaining /boot's integrity is a not-unlikely scenario. The following presumes all /boot files are intact.
+Due to data location conflicts, EFI partitions are often not set in an array on systems using software raid. However, the /boot partition has no such conflict, so it will more than likely have some sort of redundancy. Because of this, losing EFI while maintaining /boot's integrity is a not-unlikely scenario. The following presumes all /boot files are intact and the system is online.
+
+If the system isn't online and isn't bootable, you can try [recovering it from a live linux session](https://liamtbb.github.io/mounting_unbootable_linux_system/)
 
 ----
 
@@ -48,10 +50,16 @@ You can recreate most of the partition by simply running the following:
 > This will require that networking is set up and active or that repo files are otherwise available to the system
 
 ```shell
+# for centos7
 yum reinstall grub2-efi grub2-efi-modules shim
+
+# for ubuntu
+apt reinstall grub2-efi
 ```
 
-Provided this completed without error, you should be able to look in your /boot/efi/ directory now and see that it has been populated with a bunch of new files, starting with /boot/efi/EFI/. These are generic files that form the framework for the EFI partition, but they still require an update to the grub.cfg file before they will work. If this is a CentOS system, there should be a /boot/efi/EFI/centos/ directory, and inside that is where we'll put the grub.cfg file. To create the following, simply run the following:
+Provided this completed without error, you should be able to look in your /boot/efi/ directory now and see that it has been populated with a bunch of new files, starting with /boot/efi/EFI/. These are generic files that form the framework for the EFI partition, but they still require an update to the grub.cfg file before they will work. 
+
+If this is a CentOS system, there should be a /boot/efi/EFI/centos/ directory, and inside that is where we'll put the grub.cfg file. To create the following, simply run the following:
 
 ```shell
 grub2-mkconfig -o /boot/efi/EFI/centos/grub.cfg
@@ -59,6 +67,16 @@ grub2-mkconfig -o /boot/efi/EFI/centos/grub.cfg
 
 > If using software raid and the grub2-mkconfig file outputs a 'can't find disk md0' or similar error, the problem is likely related to old raid info on the new array(s). The solution is to zero the superblock on the affected array and rebuild as necessary
 
-You should now see a grub.cfg file in the specified directory. It will tell the system how to load partitions on boot, provided there were no errors output during the grub2-mkconfig command. If fstab has been updated with a mount entry for the EFI partition then you should be safe to exit out of the chroot environment and reboot the system.
+For Ubuntu, do the following:
+
+```shell
+# reinstall grub to the disk, in this example disk is sda
+grub-install /dev/sda
+
+# update grub files
+update-grub
+```
+
+You should now see a grub.cfg file in the /boot/efi/EFI/<OS>/ directory. It will tell the system how to load partitions on boot, provided there were no errors output during the above commands. If fstab has been updated with a mount entry for the EFI partition then you should be safe to exit out of the chroot environment and reboot the system.
 
 On startup you should see the EFI OS entry in your boot list. If the EFI entry isn't present and you can't boot the system then you'll have to mount to a linux live session for further troubleshoot and recovery.

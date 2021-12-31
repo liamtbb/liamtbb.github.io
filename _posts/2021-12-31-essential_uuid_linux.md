@@ -141,7 +141,6 @@ MAILADDR monitors@fakedomain.com
 # definitions of existing MD arrays
 ARRAY /dev/md/1 metadata=1.2 UUID=d64a28c9:759fb90f:35af5a05:805a92d9 name=test-srv-1:1
 ARRAY /dev/md/0 metadata=1.2 UUID=a46bd833:5c084446:d8c8870d:a85b7ba6 name=test-srv-1:0
-   spares=2
 
 # This file was auto-generated on Wed, 28 Jan 2015 17:42:19 -0800
 # by mkconf 3.2.5-5

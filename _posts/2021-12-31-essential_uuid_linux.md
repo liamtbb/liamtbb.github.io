@@ -159,4 +159,4 @@ grub uses the UUID for the partition when creating entries.
 
 ### Entries confirmed?
 
-That's more or less where and how all the essential UUIDs are configured. Running grub-update or grub2-mkconfig or whatever your distro uses to generate the grub.cfg file should now present a bootable system after update.
+That's more or less where and how all the essential UUIDs are configured. Update your entries to correspond then run grub-update or grub2-mkconfig (or whatever your distro uses to generate the grub.cfg file) and you should now have a bootable system.

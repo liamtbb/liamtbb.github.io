@@ -6,13 +6,13 @@ title: Cloning Linux Systems with Rsync
 
 ### Install and fully configure the first system, start ssh server.
 If you already have a working system to clone then proceed to next step.
-
+----
 
 ### Launch a live linux session on the blank system, partition your drive, format partitions and mount them to /mount, /mount/boot, /mount/home/, etc.
 You can create the partitions from nothing, or you can install a new bootable system using the same base OS as the source server. If you install a new bootable system then you have the option of preserving some essential files rather than rebuilding after clone (mdadm.conf, fstab, grub, etc.)
 
 We won't go in to partitioning here as that is a post unto itself and will already be covered more effectively elsewhere. However, when creating partitions for the clone, ensure that new partitions have adequate capacity to match or exceed current usage on the source system.
-
+----
 
 ### Rsync directories from source to destination server.
 Replace 1.2.3.4 with the IP of your source system. This is ideally performed while the source system is offline and mounted to a live linux session, or with primary services deactivated to minimise data change during sync. By default, rsync only updates file differentials, so you can always run rsync afterwards to quickly sync any deltas between the source and destination devices.
@@ -26,7 +26,7 @@ $ rsync -aHxv --numeric-ids --progress root@1.2.3.4:/* /mount --exclude=/dev --e
 # if you're cloning over a working, bootable system
 $ rsync -aHxv --numeric-ids --progress root@1.2.3.4:/* /mount --exclude=/dev --exclude=/proc --exclude=/sys --exclude=/tmp --exclude=/etc/default/grub --exclude=/etc/fstab --exclude=/etc/mdadm.conf
 ```
-
+----
 
 ### Update your fstab, default/grub and mdadm.conf files as needed:
 
@@ -40,7 +40,7 @@ $ nano /mount/etc/fstab
 $ nano /mount/etc/default/grub
 $ nano /mount/etc/mdadm.conf
 ```
-
+----
 
 ### Mount /mount/proc, /mount/sys/, /mount/dev/, chroot to /mount:
 These directories need to be mounted for chroot to work. Chroot simply shifts the functional filesystem root to the chosen directory, in this case our mounted clone server. Chrooting will allow us to rebuild grub so the cloned system will boot on its own.
@@ -52,7 +52,7 @@ $ mount -t sysfs sys sys/
 $ mount -o bind /dev dev/ 
 $ chroot .
 ```
-
+----
 
 ### If you get errors using commands after chrooting then you might have to export /bin to PATH:
 May or may not be an issue. If it isn't then great, if it is then slap the following commands in and it should be back to great again.
@@ -61,7 +61,7 @@ May or may not be an issue. If it isn't then great, if it is then slap the follo
 $ export PATH=$PATH:/bin
 $ export PATH=$PATH:/usr/sbin
 ```
-
+----
 
 ### Install grub or other bootloader of your choosing
 This is where the updated fstab/grub/mdadm files come into play. Grub will use the new system's UUIDs to organise the partitions on boot, so all UUIDs will need to be updated accordingly for this to work. If you installed over a working, bootable system and preserved the old files then you should be ready to go. The process might be different depending on the distro being cloned, and the grub.cfg file might not be in a slightly different directory in /boot/grub. Here are examples for Centos7 and Ubuntu18:
@@ -76,7 +76,7 @@ $ update-grub   ## Ubuntu18
 $ grub2-install /dev/sda
 $ grub2-install /dev/sdb   ## install to multiple drives if available
 ```
-
+----
 
 ### Cross fingers and reboot
 If you didn't get any errors after running the above grub commands then the system is, at least in theory, ready to boot. You can exit out of chroot and reboot the device. On boot, select the appropriate system drive to confirm everything is operational.

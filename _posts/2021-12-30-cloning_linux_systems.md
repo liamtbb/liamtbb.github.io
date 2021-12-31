@@ -4,9 +4,6 @@ title: Cloning Linux Systems with Rsync
 ---
 
 
-## Install and fully configure the first system, start ssh server.
-If you already have a working system to clone then proceed to next step.
-
 ----
 
 ## Launch a live linux session on the blank system, partition your drive, format partitions and mount them to /mount, /mount/boot, /mount/home/, etc.

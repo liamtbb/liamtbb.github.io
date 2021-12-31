@@ -5,6 +5,7 @@ title: Mounting an Unbootable Linux System
 
 
 ----
+
 ### Preparing the System for Recovery
 
 - To start, create a directory for mounting the system root:

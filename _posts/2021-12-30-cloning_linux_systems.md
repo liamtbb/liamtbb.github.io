@@ -17,12 +17,12 @@ I typically create a directory for mounting the root (/) partition to first, the
 
 ```shell
 #create mount directory for destination system
-$ mkdir /mount
+mkdir /mount
 
 #mount destination partitions
-$ mount /dev/md1 /mount/   ## mount root
-$ mount /dev/md0 /mount/boot/   ## mount boot
-$ mount /dev/md2 /mount/home/   ## mount home
+mount /dev/md1 /mount/   ## mount root
+mount /dev/md0 /mount/boot/   ## mount boot
+mount /dev/md2 /mount/home/   ## mount home
 ```
 ----
 
@@ -31,7 +31,7 @@ Replace 1.2.3.4 with the IP of your source system. This is ideally performed whi
 
 The below rsync command will sync everything (a) including hard-links (H), while excluding anything with the '--exclude=' flag. If you're cloning overtop of a bootable system then you should also exclude the grub/default, etc/fstab, and etc/mdadm.conf files so you don't have to rebuild them (or at least make a .bak copy of each for recovery after). Remove the '--exclude=/etc/mdadm.conf' if you aren't using software raid.
 
-```
+```shell
 # if you're cloning over a totally clean, unbootable system
 $ rsync -aHxv --numeric-ids --progress root@1.2.3.4:/* /mount --exclude=/dev --exclude=/proc --exclude=/sys --exclude=/tmp
 

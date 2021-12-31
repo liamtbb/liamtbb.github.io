@@ -4,12 +4,12 @@ title: About
 permalink: /about/
 ---
 
-Some information about you!
+A place for me to document useful network and system processes. 
 
 ### More Information
 
-A place to include any other types of information that you'd like to include about yourself.
+I mostly work with JunOS and Linux/BSD systems, posts here will be primarily in that context. 
 
 ### Contact me
 
-[email@domain.com](mailto:email@domain.com)
+[liambrown@gmail.com](mailto:liambrown@gmail.com)

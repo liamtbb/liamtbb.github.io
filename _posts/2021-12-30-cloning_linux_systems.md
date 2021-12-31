@@ -15,7 +15,7 @@ The live linux session will need to have networking configured with a private or
 
 I typically create a directory for mounting the root (/) partition to first, then I mount all the other partitions on top. Let's say you have partitions md0 (/boot), md1 (/), and md2 (/home):
 
-```lang=bash
+```shell
 #create mount directory for destination system
 $ mkdir /mount
 

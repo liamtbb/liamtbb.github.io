@@ -11,6 +11,8 @@ You can create the partitions from nothing, or you can install a new bootable sy
 
 We won't go in to partitioning here as that is a post unto itself and will already be covered more effectively elsewhere. However, when creating partitions for the clone, ensure that new partitions have adequate capacity to match or exceed current usage on the source system.
 
+The live linux session will need to have networking configured with a private or public IP that can ping/ssh to the source system.
+
 ----
 
 ## Rsync directories from source to destination server.

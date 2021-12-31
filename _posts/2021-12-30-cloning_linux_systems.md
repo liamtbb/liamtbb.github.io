@@ -11,9 +11,8 @@ title: Cloning Linux Systems with Rsync
 - Launch a live linux session on the blank system, partition your drive, format partitions and mount them to /mount, /mount/boot, /mount/home/, etc...
 
 - Run (replace the IP with your configured and installed source system):
-```
-$ rsync -aHxv --numeric-ids --progress root@1.2.3.4:/* /mount --exclude=/dev --exclude=/proc --exclude=/sys --exclude=/tmp
-```
+`$ rsync -aHxv --numeric-ids --progress root@1.2.3.4:/* /mount --exclude=/dev --exclude=/proc --exclude=/sys --exclude=/tmp`
+
 
 - Update your fstab, default/grub and mdadm.conf files as needed:
 ```

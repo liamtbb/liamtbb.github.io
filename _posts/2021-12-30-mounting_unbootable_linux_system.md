@@ -49,28 +49,28 @@ mount /dev/dv_scll/LV_USR /mnt/sysimage/usr
 mount /dev/dv_scll/LV_TMP /mnt/sysimage/tmp
 mount /dev/dv_scll/LV_VAR /mnt/sysimage/var
 ```
-- If there are mounting errors, it's possible the partition/LV needs a filesystem check. Run an 'fsck' or similar on the problem device.
+If there are mounting errors, it's possible the partition/LV needs a filesystem check. Run an 'fsck' or similar on the problem device.
 
 ----
 
 
 ### Mounting with Physical Volumes or Arrays
 
-- If 'vgscan' shows no available logical volumes, or you already know the system uses a certain partition scheme, you can mount the physical volumes directly. In this case we know that /dev/md0 is '/boot', /dev/md1 is '/', and /dev/sdb2 is SWAP (which isn't necessary right now and can be ignored). Mounting is done the same as with the LVs above:
+If 'vgscan' shows no available logical volumes, or you already know the system uses a certain partition scheme, you can mount the physical volumes directly. In this case we know that /dev/md0 is '/boot', /dev/md1 is '/', and /dev/sdb2 is SWAP (which isn't necessary right now and can be ignored). Mounting is done the same as with the LVs above:
 
 ```shell
 mount /dev/md1 /mnt/sysimage/
 mount /dev/md0 /mnt/sysimage/boot
 ```
 
-- If you have more partitions you can add them as needed, the example used is a basic setup common to many of our installs with a small partition for boot and most of the remaining space going to root with a little bit left over for SWAP.
+If you have more partitions you can add them as needed, the example used is a basic setup common to many of our installs with a small partition for boot and most of the remaining space going to root with a little bit left over for SWAP.
 
 ----
 
 
 ### Recovered System Final Steps
 
-- Provided that the partitions all mounted without issue, we still need to tell the system to bind a few other important mount points to the //recovered// system instead of the //recovery// system:
+Provided that the partitions all mounted without issue, we still need to tell the system to bind a few other important mount points to the //recovered// system instead of the //recovery// system:
 
 ```shell
 mount --bind /proc /mnt/sysimage/proc
@@ -79,10 +79,10 @@ mount --bind /dev /mnt/sysimage/dev
 mount --bind /dev/pts /mnt/sysimage/dev/pts
 ```
 
-- If there were no errors, we should now be able to 'chroot' to the recovered system's mount directory:
+Provided there were no errors, we should now be able to 'chroot' to the recovered system's mount directory:
 
 ```shell
 chroot /mnt/sysimage
 ```
 
-- We can now use the system as if we booted right into it. You can turn up the network if need be, install packages, install grub if the system was missing it, turn up services, etc. Exiting out of the shell will return us to the shell of the recovery system.
+We can now use the system as if we booted right into it. You can turn up the network if need be, install packages, install grub if the system was missing it, turn up services, etc. Exiting out of the shell will return us to the shell of the recovery system.

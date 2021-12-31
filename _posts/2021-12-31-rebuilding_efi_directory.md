@@ -27,6 +27,17 @@ Now you can mount the partition to /boot/efi:
 # mkdir /boot/efi if it doesn't already exist, but it should
 mount /dev/sda3 /boot/efi/
 ```
+
+You'll also need to add a persistent mount entry in fstab for the system to come back after boot. Use blkid to show the UUID for the EFI partition and add to fstab as follows:
+
+```shell
+# blkid will output all device uuids
+blkid
+
+# add the entry to fstab, in this example uuid is F123-06D4
+nano /etc/fstab
+>>> UUID=F123-06D4 /boot/efi vfat defaults 0 2
+```
 ----
 
 
@@ -48,6 +59,6 @@ grub2-mkconfig -o /boot/efi/EFI/centos/grub.cfg
 
 > If using software raid and the grub2-mkconfig file outputs a 'can't find disk md0' or similar error, the problem is likely related to old raid info on the new array(s). The solution is to zero the superblock on the affected array and rebuild as necessary
 
-You should now see a grub.cfg file in the specified directory. It will tell the system how to load partitions on boot, provided there were no errors output during the grub2-mkconfig command. All you should have to do now is update the contents of /etc/fstab to reflect the new device UUIDs. After fstab has been updated you can exit out of the chroot environment and reboot the system.
+You should now see a grub.cfg file in the specified directory. It will tell the system how to load partitions on boot, provided there were no errors output during the grub2-mkconfig command. If fstab has been updated with a mount entry for the EFI partition then you should be safe to exit out of the chroot environment and reboot the system.
 
-On startup change boot order to prefer the new EFI system, the newly-copied filesystem should boot up accordingly.
+On startup you should see the EFI OS entry in your boot list. If the EFI entry isn't present and you can't boot the system then you'll have to mount to a linux live session for further troubleshoot and recovery.

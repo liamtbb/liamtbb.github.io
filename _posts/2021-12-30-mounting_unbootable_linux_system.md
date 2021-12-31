@@ -22,8 +22,8 @@ lsblk -f
 - Hopefully you can determine which partition is which based on context clues or prior knowledge of the system. In this case we have /dev/sdb1 (shows as a 512MB linux raid partition) and /dev/sdb3 (shows as a 950GB linux raid partition) and /dev/sdb2 (shows as 8GB partition, probably SWAP. We'll need to bring the array partitions online before we can mount them, and we'll need to force mdadm to start the array with just a single partition for each. Do so with the following:
 
 ```shell
-$ mdadm -A -R /dev/md0 /dev/sdb1
-$ mdadm -A -R /dev/md1 /dev/sdb3
+mdadm -A -R /dev/md0 /dev/sdb1
+mdadm -A -R /dev/md1 /dev/sdb3
 ```
 
 - Another 'lsblk' should now show /dev/sdb1 and /dev/sdb3 as part of their respective MD arrays, as well as what type of RAID they're configured as. We now have to determine if we want to mount the raid arrays directly, or if the arrays are just containers for logical volumes which will need to be mounted individually. We can do this with the 'vgscan' command, which will search for available volume groups:

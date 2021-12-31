@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Cloning Linux Systems with Rsync
+title: Removing Cluster from Proxmox Device
 ---
 
 

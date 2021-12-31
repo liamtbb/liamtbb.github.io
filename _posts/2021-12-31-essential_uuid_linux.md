@@ -47,7 +47,7 @@ Note that the UUIDs are identical for partitions in the same array, but sub-UUID
 
 ### /etc/fstab
 
-First let's take a look at the fstab file:
+Now let's take a look at the fstab file:
 
 ```shell
 cat /etc/fstab
